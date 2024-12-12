@@ -154,7 +154,7 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
                 // block chars must start with '\n' or start of file (undefined lol) and end with '\n' or EOF
                 if (BLOCK_CHARS.indexOf(token.children) != -1 && (tokens[j-1] == undefined 
                     || tokens[j+1].type == TokenType.WHITESPACE)) {
-                    j+= 2; // ignore whitespace char after block char
+                    j++; // ignore whitespace char after block char
                     while (j < tokens.length - 1 && tokens[j].type != TokenType.NEWLINE) {
                         children.push(tokens[j]);
                         j++;
@@ -180,12 +180,12 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
                 const tokenType: Exclude<TokenType, typeof TokenExcludeTypes[number]> = token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>;
                 // parse all the children inside the tags
                 if (!highlightConfig[tokenType])    { throw Error('[error] configuration error.')}
+
                 if (BLOCK_CHARS.indexOf(token.children) != -1) {
                     stack.push(
                         // @ts-ignore this is just annoying
                         toHTML(highlightConfig[tokenType].tag) +
                         token.children +
-                        + " " +
                         // @ts-ignore
                         toHTML(highlightConfig[tokenType].tag, true) +
                         // @ts-ignore
@@ -196,6 +196,7 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
                         // @ts-ignore
                         tokens[j].children
                     )
+                    continue;
                 }
                 stack.push(
                     // @ts-ignore this is just annoying

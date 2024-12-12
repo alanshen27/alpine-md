@@ -4,7 +4,6 @@ exports.toHTML = void 0;
 const toHTML = (tagName, end = false) => {
     if (typeof tagName == 'string')
         return `<${end ? '/' : ''}${tagName}>`;
-    console.log(tagName);
     if (end)
         return `</${tagName.tagName}>`;
     const keys = Object.keys(tagName);

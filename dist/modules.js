@@ -118,7 +118,7 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                 // block chars must start with '\n' or start of file (undefined lol) and end with '\n' or EOF
                 if (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && (tokens[j - 1] == undefined
                     || tokens[j + 1].type == constants_1.TokenType.WHITESPACE)) {
-                    j += 2; // ignore whitespace char after block char
+                    j++; // ignore whitespace char after block char
                     while (j < tokens.length - 1 && tokens[j].type != constants_1.TokenType.NEWLINE) {
                         children.push(tokens[j]);
                         j++;
@@ -147,7 +147,6 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                     // @ts-ignore this is just annoying
                     (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
                         token.children +
-                        +" " +
                         // @ts-ignore
                         (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag, true) +
                         // @ts-ignore
@@ -157,6 +156,7 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                         (0, toHTML_1.toHTML)(highlightConfig[tokenType].child, true) +
                         // @ts-ignore
                         tokens[j].children);
+                    continue;
                 }
                 stack.push(
                 // @ts-ignore this is just annoying
