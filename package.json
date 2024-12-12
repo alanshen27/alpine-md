@@ -1,0 +1,16 @@
+{
+  "name": "alpine-md",
+  "version": "1.0.0",
+  "description": "Lightweight markdown-inspired syntax renderer.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "ts-node src/testEntry.ts"
+  },
+  "author": "Alan Shen",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
