@@ -1,6 +1,6 @@
 {
   "name": "alpine-md",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Lightweight markdown-inspired syntax renderer.",
   "main": "dist/index.js",
   "scripts": {

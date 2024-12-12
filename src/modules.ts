@@ -185,6 +185,7 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
                         // @ts-ignore this is just annoying
                         toHTML(highlightConfig[tokenType].tag) +
                         token.children +
+                        + " " +
                         // @ts-ignore
                         toHTML(highlightConfig[tokenType].tag, true) +
                         // @ts-ignore

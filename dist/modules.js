@@ -147,6 +147,7 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                     // @ts-ignore this is just annoying
                     (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
                         token.children +
+                        +" " +
                         // @ts-ignore
                         (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag, true) +
                         // @ts-ignore
