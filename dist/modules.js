@@ -1,6 +1,7 @@
 "use strict";
+// TODO: add lists, code blocks, and escape chars
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.render = exports.renderer = exports.tokenizer = void 0;
+exports.render = exports.highlight = exports.renderer = exports.tokenizer = void 0;
 const joinConfig_1 = require("./helpers/joinConfig");
 const toHTML_1 = require("./helpers/toHTML");
 const constants_1 = require("./constants");
@@ -84,6 +85,7 @@ const renderer = (tokens, rawConfig = {}, layer = 0) => {
             // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
             if (tokens[j].type == token.type || (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == constants_1.TokenType.NEWLINE)) {
                 i = j + 1;
+                const a = renderConfig[token.type];
                 // parse all the children inside the tags
                 stack.push((0, toHTML_1.toHTML)(renderConfig[token.type]) + (0, exports.renderer)(children, renderConfig, layer + 1) + (0, toHTML_1.toHTML)(renderConfig[token.type], true));
                 continue;
@@ -95,6 +97,70 @@ const renderer = (tokens, rawConfig = {}, layer = 0) => {
     return stack.join('');
 };
 exports.renderer = renderer;
+const highlight = (tokens, rawConfig = {}, layer = 0) => {
+    const stack = [];
+    let i = 0;
+    const highlightConfig = (0, joinConfig_1.joinSyntaxConfig)(rawConfig);
+    if (layer > MAX_LAYERS) {
+        throw new Error('Max layers reached');
+    }
+    while (i < tokens.length) {
+        let token = tokens[i];
+        if (token.type != constants_1.TokenType.STRING && token.type != constants_1.TokenType.NEWLINE) {
+            if (constants_1.TokenExcludeTypes.indexOf(token.type) != -1) {
+                stack.push(token.children);
+                i++;
+                continue;
+            }
+            let children = [];
+            let j = i;
+            if (j < tokens.length - 2) {
+                // block chars must start with '\n' or start of file (undefined lol) and end with '\n' or EOF
+                if (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && (tokens[j - 1] == undefined
+                    || tokens[j + 1].type == constants_1.TokenType.WHITESPACE)) {
+                    j += 2; // ignore whitespace char after block char
+                    while (j < tokens.length - 1 && tokens[j].type != constants_1.TokenType.NEWLINE) {
+                        children.push(tokens[j]);
+                        j++;
+                    }
+                }
+            }
+            if (j < tokens.length - 1) {
+                if (constants_1.INLINE_CHARS.indexOf(token.children) != -1) {
+                    j++;
+                    while (j < tokens.length - 1 && tokens[j].type != token.type) {
+                        children.push(tokens[j]);
+                        j++;
+                    }
+                }
+            }
+            // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
+            if (tokens[j].type == token.type || (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == constants_1.TokenType.NEWLINE)) {
+                i = j + 1;
+                const tokenType = token.type;
+                // parse all the children inside the tags
+                stack.push(
+                // @ts-ignore this is just annoying
+                (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
+                    token.children +
+                    (0, toHTML_1.toHTML)('span', false) +
+                    // @ts-ignore
+                    (0, toHTML_1.toHTML)(highlightConfig[tokenType].child) +
+                    (0, exports.renderer)(children) +
+                    (0, toHTML_1.toHTML)('span') +
+                    // @ts-ignore
+                    (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
+                    token.children +
+                    (0, toHTML_1.toHTML)('span', false));
+                continue;
+            }
+        }
+        stack.push(token.children);
+        i++;
+    }
+    return stack.join('');
+};
+exports.highlight = highlight;
 const render = (raw, rawConfig = {}) => {
     const tokens = (0, exports.tokenizer)(raw);
     return (0, exports.renderer)(tokens, rawConfig);
