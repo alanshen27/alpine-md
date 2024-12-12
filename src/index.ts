@@ -1,5 +1,5 @@
 import { TokenType } from "./constants";
-type RenderConfig = Partial<{[key in TokenType]: string}>;
+import { Config } from "./interface/Config";
 
-export type { TokenType, RenderConfig };
-export { tokenizer, renderer, render } from "./modules";
+export type { TokenType, Config };
+export { tokenizer, renderer, render, highlight } from "./modules";

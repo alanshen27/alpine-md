@@ -1,8 +1,16 @@
-import { RENDER_CONFIG, TokenExcludeTypes, TokenType } from "../constants"
+import { RENDER_CONFIG, SYNTAX_CONFIG, TokenExcludeTypes, TokenType } from "../constants"
+import { Config, SyntaxConfig } from "../interface/Config"
 
-export const joinConfig = (config: Partial<{[key in TokenType]: string}>): {[key in Exclude<TokenType, typeof TokenExcludeTypes[number]>]: string} => {
+export const joinConfig = (config: Config) => {
     return {
         ...RENDER_CONFIG,
+        ...config,
+    }
+}
+
+export const joinSyntaxConfig = (config: SyntaxConfig): SyntaxConfig => {
+    return {
+        ...SYNTAX_CONFIG,
         ...config,
     }
 }

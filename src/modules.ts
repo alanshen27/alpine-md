@@ -1,7 +1,10 @@
-import { joinConfig } from './helpers/joinConfig';
+// TODO: add lists, code blocks, and escape chars
+
+import { joinConfig, joinSyntaxConfig } from './helpers/joinConfig';
 import { toHTML } from './helpers/toHTML';
 import { Token } from './interface/Token';
 import { TokenType, TokenTypeMap, TokenExcludeTypes, SPECIAL_CHARS, BLOCK_CHARS, INLINE_CHARS } from './constants';
+import { Config, SyntaxConfig } from './interface/Config';
 
 // DESC: changes string into Token[] array that will ber parsed by the renderer
 
@@ -58,7 +61,7 @@ const MAX_LAYERS = 100;
 // PARAMS: tokens: Token[] - array of tokens to render
 // PARAMS: rawConfig: Partial<{[key in TokenType]: string}> - config object to render tokens
 
-export const renderer = (tokens: Token[], rawConfig: Partial<{[key in TokenType]: string}> = {}, layer = 0): string => {
+export const renderer = (tokens: Token[], rawConfig: Config = {}, layer = 0): string => {
     const stack = [];
     let i = 0;
 
@@ -108,6 +111,7 @@ export const renderer = (tokens: Token[], rawConfig: Partial<{[key in TokenType]
             // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
             if (tokens[j].type == token.type || (BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == TokenType.NEWLINE)) {
                 i = j + 1;
+                const a = renderConfig[token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>]
                 // parse all the children inside the tags
                 stack.push(toHTML(renderConfig[token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>]) + renderer(children, renderConfig, layer + 1) + toHTML(renderConfig[token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>], true));
                 continue;
@@ -122,6 +126,86 @@ export const renderer = (tokens: Token[], rawConfig: Partial<{[key in TokenType]
     return stack.join('');
 }
 
+export const highlight = (tokens: Token[], rawConfig: SyntaxConfig = {}, layer = 0): string => {
+    const stack = [];
+    let i = 0;
+
+    const highlightConfig: SyntaxConfig = joinSyntaxConfig(rawConfig);
+
+    if (layer > MAX_LAYERS) {
+        throw new Error('Max layers reached');
+    }
+
+    while (i < tokens.length) {
+        let token = tokens[i];
+
+        if (token.type != TokenType.STRING && token.type != TokenType.NEWLINE) {
+            if (TokenExcludeTypes.indexOf(token.type) != -1) {
+                stack.push(token.children);
+                i++;
+                continue;
+            }
+
+            let children = [];
+            
+            let j = i;
+
+            if (j < tokens.length - 2) {
+                // block chars must start with '\n' or start of file (undefined lol) and end with '\n' or EOF
+                if (BLOCK_CHARS.indexOf(token.children) != -1 && (tokens[j-1] == undefined 
+                    || tokens[j+1].type == TokenType.WHITESPACE)) {
+                    j+= 2; // ignore whitespace char after block char
+                    while (j < tokens.length - 1 && tokens[j].type != TokenType.NEWLINE) {
+                        children.push(tokens[j]);
+                        j++;
+                    }
+                }
+            }
+
+            if (j < tokens.length - 1) {
+                if (INLINE_CHARS.indexOf(token.children) != -1) {
+                    j++;
+                    while (j < tokens.length - 1 && tokens[j].type != token.type) {
+                        children.push(tokens[j]);
+                        j++;
+                    }
+                }
+            }
+
+            
+            // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
+            if (tokens[j].type == token.type || (BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == TokenType.NEWLINE)) {
+                i = j + 1;
+
+                const tokenType: Exclude<TokenType, typeof TokenExcludeTypes[number]> = token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>;
+                // parse all the children inside the tags
+                
+
+                stack.push(
+                    // @ts-ignore this is just annoying
+                    toHTML(highlightConfig[tokenType].tag) +
+                    token.children +
+                    toHTML('span', false) +
+                    // @ts-ignore
+                    toHTML(highlightConfig[tokenType].child) +
+                    renderer(children) +
+                    toHTML('span') +
+                    // @ts-ignore
+                    toHTML(highlightConfig[tokenType].tag) +
+                    token.children +
+                    toHTML('span', false)
+                )
+                continue;
+            }
+        }
+
+        stack.push(token.children);
+
+        i++;
+    }
+
+    return stack.join('');
+}
 
 export const render = (raw: string, rawConfig: Partial<{[key in TokenType]: string}> = {}) => {
     const tokens = tokenizer(raw);
