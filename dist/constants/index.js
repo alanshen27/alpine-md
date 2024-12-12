@@ -19,7 +19,6 @@ exports.SPECIAL_CHARS = [
     '####',
     '#####',
     '######',
-    '>',
     '\n',
     ' ',
 ];
@@ -31,7 +30,6 @@ exports.BLOCK_CHARS = [
     '####',
     '#####',
     '######',
-    '>',
 ];
 // NOTE: components that end with the same special char
 exports.INLINE_CHARS = [

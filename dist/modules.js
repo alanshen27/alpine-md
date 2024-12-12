@@ -139,6 +139,8 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                 i = j + 1;
                 const tokenType = token.type;
                 // parse all the children inside the tags
+                if (!highlightConfig[tokenType])
+                    throw Error('[error] configuration error.');
                 stack.push(
                 // @ts-ignore this is just annoying
                 (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
@@ -146,7 +148,7 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                     (0, toHTML_1.toHTML)('span', false) +
                     // @ts-ignore
                     (0, toHTML_1.toHTML)(highlightConfig[tokenType].child) +
-                    (0, exports.renderer)(children) +
+                    (0, exports.highlight)(children, layer + 1) +
                     (0, toHTML_1.toHTML)('span') +
                     // @ts-ignore
                     (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
