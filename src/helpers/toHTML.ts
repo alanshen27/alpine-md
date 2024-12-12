@@ -2,7 +2,8 @@ import { Tag } from "../interface/Config";
 
 export const toHTML = (tagName: string | Tag, end: boolean = false) => {
     if (typeof tagName == 'string') return `<${end ? '/' : ''}${tagName}>`;
-    if (end)    return `</${tagName}>`
+    console.log(tagName)
+    if (end)    return `</${tagName.tagName}>`
 
     const keys = Object.keys(tagName);
 

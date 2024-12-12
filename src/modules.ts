@@ -179,20 +179,23 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
 
                 const tokenType: Exclude<TokenType, typeof TokenExcludeTypes[number]> = token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>;
                 // parse all the children inside the tags
-                if (!highlightConfig[tokenType])    throw Error('[error] configuration error.')
+                if (!highlightConfig[tokenType])    { throw Error('[error] configuration error.')}
                 stack.push(
                     // @ts-ignore this is just annoying
                     toHTML(highlightConfig[tokenType].tag) +
                     token.children +
-                    toHTML('span', false) +
+                    // @ts-ignore
+                    toHTML(highlightConfig[tokenType].tag, true) +
                     // @ts-ignore
                     toHTML(highlightConfig[tokenType].child) +
                     highlight(children, layer + 1) +
-                    toHTML('span') +
+                    // @ts-ignore
+                    toHTML(highlightConfig[tokenType].child, true) +
                     // @ts-ignore
                     toHTML(highlightConfig[tokenType].tag) +
-                    token.children +
-                    toHTML('span', false)
+                    token.children+
+                    // @ts-ignore
+                    toHTML(highlightConfig[tokenType].tag, true)
                 )
                 continue;
             }

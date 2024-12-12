@@ -86,143 +86,143 @@ export const SYNTAX_CONFIG: SyntaxConfig = {
     [TokenType.BOLD]: {
         child: {
             tagName: 'span',
-            class: 'text-orange-500', // VSCode-themed color for bold text
+            class: 'text-orange-500',
         },
         tag: {
             tagName: 'span',
-            class: 'text-orange-500', // VSCode-themed color for bold text
+            class: 'text-orange-500',
         },
     },
 
     [TokenType.ITALIC]: {
         child: {
             tagName: 'span',
-            class: 'text-teal-500', // VSCode-themed color for italic text
+            class: 'text-teal-500',
         },
         tag: {
             tagName: 'span',
-            class: 'text-teal-500', // VSCode-themed color for italic text
+            class: 'text-teal-500',
         },
     },
 
     [TokenType.UNDERLINE]: {
         child: {
             tagName: 'span',
-            class: 'text-blue-500', // VSCode-themed color for underline text
+            class: 'text-blue-500',
         },
         tag: {
             tagName: 'span',
-            class: 'text-blue-500', // VSCode-themed color for underline text
+            class: 'text-blue-500',
         },
     },
 
     [TokenType.STRIKETHROUGH]: {
         child: {
             tagName: 'span',
-            class: 'text-red-500', // VSCode-themed color for strikethrough text
+            class: 'text-red-500',
         },
         tag: {
             tagName: 'span',
-            class: 'text-red-500', // VSCode-themed color for strikethrough text
+            class: 'text-red-500',
         },
     },
 
     [TokenType.CODE]: {
         child: {
-            tagName: 'code',
-            class: 'bg-gray-800 text-yellow-400', // VSCode-themed color for inline code
+            tagName: 'span',
+            class: 'text-yellow-400',
         },
         tag: {
-            tagName: 'code',
-            class: 'bg-gray-800 text-yellow-400', // VSCode-themed color for inline code
+            tagName: 'span',
+            class: 'text-yellow-400',
         },
     },
 
     [TokenType.STRING]: {
         child: {
             tagName: 'span',
-            class: 'text-green-500', // VSCode-themed color for strings
+            class: 'text-green-500',
         },
         tag: {
             tagName: 'span',
-            class: 'text-green-500', // VSCode-themed color for strings
+            class: 'text-green-500',
         },
     },
 
     [TokenType.NEWLINE]: {
         child: {
             tagName: 'span',
-            class: 'text-gray-400', // VSCode-themed color for newlines
+            class: 'text-gray-400',
         },
         tag: {
             tagName: 'span',
-            class: 'text-gray-400', // VSCode-themed color for newlines
+            class: 'text-gray-400',
         },
     },
 
     [TokenType.H1]: {
         child: {
-            tagName: 'h1',
-            class: 'text-blue-700 font-bold', // VSCode-themed color for H1 headings
+            tagName: 'span',
+            class: 'text-blue-700',
         },
         tag: {
-            tagName: 'h1',
-            class: 'text-blue-700 font-bold', // VSCode-themed color for H1 headings
+            tagName: 'span',
+            class: 'text-blue-700',
         },
     },
 
     [TokenType.H2]: {
         child: {
-            tagName: 'h2',
-            class: 'text-indigo-600 font-semibold', // VSCode-themed color for H2 headings
+            tagName: 'span',
+            class: 'text-indigo-600',
         },
         tag: {
-            tagName: 'h2',
-            class: 'text-indigo-600 font-semibold', // VSCode-themed color for H2 headings
+            tagName: 'span',
+            class: 'text-indigo-600',
         },
     },
 
     [TokenType.H3]: {
         child: {
-            tagName: 'h3',
-            class: 'text-purple-600 font-medium', // VSCode-themed color for H3 headings
+            tagName: 'span',
+            class: 'text-purple-600',
         },
         tag: {
-            tagName: 'h3',
-            class: 'text-purple-600 font-medium', // VSCode-themed color for H3 headings
+            tagName: 'span',
+            class: 'text-purple-600',
         },
     },
 
     [TokenType.H4]: {
         child: {
-            tagName: 'h4',
-            class: 'text-pink-600 font-normal', // VSCode-themed color for H4 headings
+            tagName: 'span',
+            class: 'text-pink-600',
         },
         tag: {
-            tagName: 'h4',
-            class: 'text-pink-600 font-normal', // VSCode-themed color for H4 headings
+            tagName: 'span',
+            class: 'text-pink-600',
         },
     },
 
     [TokenType.H5]: {
         child: {
-            tagName: 'h5',
-            class: 'text-gray-700 font-light', // VSCode-themed color for H5 headings
+            tagName: 'span',
+            class: 'text-gray-700',
         },
         tag: {
-            tagName: 'h5',
-            class: 'text-gray-700 font-light', // VSCode-themed color for H5 headings
+            tagName: 'span',
+            class: 'text-gray-700',
         },
     },
 
     [TokenType.H6]: {
         child: {
-            tagName: 'h6',
-            class: 'text-gray-500 text-sm', // VSCode-themed color for H6 headings
+            tagName: 'span',
+            class: 'text-gray-500',
         },
         tag: {
-            tagName: 'h6',
-            class: 'text-gray-500 text-sm', // VSCode-themed color for H6 headings
+            tagName: 'span',
+            class: 'text-gray-500',
         },
     },
 };
