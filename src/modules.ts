@@ -61,7 +61,7 @@ const MAX_LAYERS = 100;
 // PARAMS: tokens: Token[] - array of tokens to render
 // PARAMS: rawConfig: Partial<{[key in TokenType]: string}> - config object to render tokens
 
-export const renderer = (tokens: Token[], rawConfig: Config = {}, layer = 0): string => {
+export const renderer = (tokens: Token[], rawConfig: Partial<Config> = {}, layer = 0): string => {
     const stack = [];
     let i = 0;
 
@@ -126,7 +126,7 @@ export const renderer = (tokens: Token[], rawConfig: Config = {}, layer = 0): st
     return stack.join('');
 }
 
-export const highlight = (tokens: Token[], rawConfig: SyntaxConfig = {}, layer = 0): string => {
+export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}, layer = 0): string => {
     const stack = [];
     let i = 0;
 
@@ -179,8 +179,7 @@ export const highlight = (tokens: Token[], rawConfig: SyntaxConfig = {}, layer =
 
                 const tokenType: Exclude<TokenType, typeof TokenExcludeTypes[number]> = token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>;
                 // parse all the children inside the tags
-                
-
+                if (!highlightConfig[tokenType])    throw Error('[error] configuration error.')
                 stack.push(
                     // @ts-ignore this is just annoying
                     toHTML(highlightConfig[tokenType].tag) +
@@ -188,7 +187,7 @@ export const highlight = (tokens: Token[], rawConfig: SyntaxConfig = {}, layer =
                     toHTML('span', false) +
                     // @ts-ignore
                     toHTML(highlightConfig[tokenType].child) +
-                    renderer(children) +
+                    highlight(children, layer + 1) +
                     toHTML('span') +
                     // @ts-ignore
                     toHTML(highlightConfig[tokenType].tag) +
@@ -207,7 +206,7 @@ export const highlight = (tokens: Token[], rawConfig: SyntaxConfig = {}, layer =
     return stack.join('');
 }
 
-export const render = (raw: string, rawConfig: Partial<{[key in TokenType]: string}> = {}) => {
+export const render = (raw: string, rawConfig: Partial<Config> = {}) => {
     const tokens = tokenizer(raw);
     return renderer(tokens, rawConfig);
 }

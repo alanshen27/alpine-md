@@ -1,4 +1,4 @@
-import { Config } from "../interface/Config";
+import { Config, SyntaxConfig } from "../interface/Config";
 
 /**
  * NOTE: special chars with more than 1 char should 
@@ -19,7 +19,6 @@ export const SPECIAL_CHARS = [
     '####',
     '#####',
     '######',
-    '>',
     '\n',
     ' ',
 ];
@@ -32,7 +31,6 @@ export const BLOCK_CHARS = [
     '####',
     '#####',
     '######',
-    '>',
 ]
 
 // NOTE: components that end with the same special char
@@ -84,7 +82,7 @@ export const RENDER_CONFIG: Config = {
     [TokenType.H6]: 'h6',
 }
 
-export const SYNTAX_CONFIG = {
+export const SYNTAX_CONFIG: SyntaxConfig = {
     [TokenType.BOLD]: {
         child: {
             tagName: 'span',
