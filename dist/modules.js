@@ -135,8 +135,9 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                 }
             }
             // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
-            if (tokens[j].type == token.type || (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == constants_1.TokenType.NEWLINE)) {
+            if ((tokens[j].type == token.type && constants_1.BLOCK_CHARS.indexOf(token.children) == -1) || (constants_1.BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == constants_1.TokenType.NEWLINE)) {
                 i = j + 1;
+                console.log(tokens[j]);
                 const tokenType = token.type;
                 // parse all the children inside the tags
                 if (!highlightConfig[tokenType]) {

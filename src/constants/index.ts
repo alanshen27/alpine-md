@@ -234,6 +234,7 @@ export const TokenTypeMap: {
     '*': TokenType.ITALIC,
     '**': TokenType.BOLD,
     '~': TokenType.STRIKETHROUGH,
+    '_': TokenType.UNDERLINE,
     '`': TokenType.CODE,
     '#': TokenType.H1,
     '##': TokenType.H2,

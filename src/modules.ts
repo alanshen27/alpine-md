@@ -174,8 +174,9 @@ export const highlight = (tokens: Token[], rawConfig: Partial<SyntaxConfig> = {}
 
             
             // check if loop ended because token.type was found or if it just reached eof, then decide whether to mark or not
-            if (tokens[j].type == token.type || (BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == TokenType.NEWLINE)) {
+            if ((tokens[j].type == token.type && BLOCK_CHARS.indexOf(token.children) == -1) || (BLOCK_CHARS.indexOf(token.children) != -1 && tokens[j].type == TokenType.NEWLINE)) {
                 i = j + 1;
+                console.log(tokens[j])
 
                 const tokenType: Exclude<TokenType, typeof TokenExcludeTypes[number]> = token.type as Exclude<TokenType, typeof TokenExcludeTypes[number]>;
                 // parse all the children inside the tags
