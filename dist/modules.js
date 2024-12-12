@@ -142,6 +142,21 @@ const highlight = (tokens, rawConfig = {}, layer = 0) => {
                 if (!highlightConfig[tokenType]) {
                     throw Error('[error] configuration error.');
                 }
+                if (constants_1.BLOCK_CHARS.indexOf(token.children) != -1) {
+                    stack.push(
+                    // @ts-ignore this is just annoying
+                    (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
+                        token.children +
+                        // @ts-ignore
+                        (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag, true) +
+                        // @ts-ignore
+                        (0, toHTML_1.toHTML)(highlightConfig[tokenType].child) +
+                        (0, exports.highlight)(children, layer + 1) +
+                        // @ts-ignore
+                        (0, toHTML_1.toHTML)(highlightConfig[tokenType].child, true) +
+                        // @ts-ignore
+                        tokens[j].children);
+                }
                 stack.push(
                 // @ts-ignore this is just annoying
                 (0, toHTML_1.toHTML)(highlightConfig[tokenType].tag) +
